@@ -1,19 +1,26 @@
 import React from "react";
-import { Text, View } from "react-native";
+
 //Navigation
-import { createAppContainer } from "react-navigation";
+import { createAppContainer, createSwitchNavigator } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 import { createBottomTabNavigator } from "react-navigation-tabs";
 //Screens
 import HomeScreen from "./screens/HomeScreen";
 import SettingsScreen from "./screens/SettingsScreen";
+import LoginScreen from "./screens/LoginScreen";
+import SignupScreen from "./screens/SignupScreen";
+
+const AuthStack = createStackNavigator({
+  Login: LoginScreen,
+  Signup: SignupScreen
+});
 
 const HomeStack = createStackNavigator({
-  Home: HomeScreen
+  Home: { screen: HomeScreen }
 });
 
 const SettingsStack = createStackNavigator({
-  Settings: SettingsScreen
+  Settings: { screen: SettingsScreen }
 });
 
 const TabNavigator = createBottomTabNavigator({
@@ -21,4 +28,9 @@ const TabNavigator = createBottomTabNavigator({
   Settings: SettingsStack
 });
 
-export default createAppContainer(TabNavigator);
+export default createAppContainer(
+  createSwitchNavigator({
+    Auth: AuthStack,
+    App: TabNavigator
+  })
+);

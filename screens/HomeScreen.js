@@ -9,8 +9,8 @@ const HomeScreen = () => {
     <SafeAreaView>
       <View
         style={{
-          padding: 10,
-          backgroundColor: "#333",
+          padding: 5,
+          backgroundColor: "#f1f1f2",
           flexDirection: "row",
           justifyContent: "space-around"
         }}
@@ -18,45 +18,48 @@ const HomeScreen = () => {
         <View style={{ flexDirection: "row" }}>
           <FontAwesome5
             name="sort"
-            color="white"
+            color="black"
             size={18}
             style={{ marginRight: 10 }}
           />
-          <Text style={{ color: "white", paddingTop: 2 }}>Recent</Text>
+          <Text style={{ color: "black", paddingTop: 2 }}>Recent</Text>
         </View>
         <View style={{ flexDirection: "row" }}>
           <FontAwesome5
             name="comment-slash"
-            color="white"
+            color="black"
             size={18}
             style={{ marginRight: 10 }}
           />
-          <Text style={{ color: "white", paddingTop: 2 }}>Hide Comments</Text>
+          <Text style={{ color: "black", paddingTop: 2 }}>Hide Comments</Text>
         </View>
         <View style={{ flexDirection: "row" }}>
           <FontAwesome5
             name="shapes"
-            color="white"
+            color="black"
             size={18}
             style={{ marginRight: 10 }}
           />
-          <Text style={{ color: "white", paddingTop: 2 }}>Emojis</Text>
+          <Text style={{ color: "black", paddingTop: 2 }}>Emojis</Text>
         </View>
       </View>
       <View
         style={{
-          borderBottomWidth: 1,
-          borderBottomColor: "#eee",
           padding: 15,
           paddingLeft: 5
         }}
       >
-        <Text style={{ fontSize: 16, color: "#999", fontStyle: "italic" }}>
+        <Emoji
+          name="man-shrugging"
+          style={{ fontSize: 18, color: "black" }}
+        ></Emoji>
+
+        <Text style={{ fontSize: 14, color: "#999", fontStyle: "italic" }}>
           muhittin eleştiriyor
         </Text>
         <Text
           style={{
-            fontSize: 22
+            fontSize: 16
           }}
         >
           Dünyayı Amerika mı yönetiyor?
@@ -67,8 +70,8 @@ const HomeScreen = () => {
           flexDirection: "row",
           justifyContent: "space-around",
           padding: 10,
-          borderBottomWidth: 1,
-          borderBottomColor: "#eee"
+          borderWidth: 1,
+          borderColor: "#eee"
         }}
       >
         <View
@@ -121,11 +124,13 @@ const HomeScreen = () => {
           style={{
             flexDirection: "row",
             justifyContent: "flex-start",
-            alignItems: "center"
+            alignItems: "center",
+            borderBottomWidth: 1,
+            borderBottomColor: "#f1f1f2"
           }}
         >
           <Emoji name="thumbsup" style={{ fontSize: 24 }}></Emoji>
-          <Text style={{ fontSize: 15, paddingTop: 3, paddingLeft: 5 }}>
+          <Text style={{ fontSize: 13, paddingTop: 2, paddingLeft: 5 }}>
             Serkan: tabiki amerika yonetiyor kim yonetecekti baska
           </Text>
         </View>
@@ -133,11 +138,13 @@ const HomeScreen = () => {
           style={{
             flexDirection: "row",
             justifyContent: "flex-start",
-            alignItems: "center"
+            alignItems: "center",
+            borderBottomWidth: 1,
+            borderBottomColor: "#f1f1f2"
           }}
         >
           <Emoji name="thumbsdown" style={{ fontSize: 24 }}></Emoji>
-          <Text style={{ fontSize: 15, paddingTop: 3, paddingLeft: 5 }}>
+          <Text style={{ fontSize: 13, paddingTop: 2, paddingLeft: 5 }}>
             excalibur47: he amk her sey bitti dunyayi kimin yonettigi
           </Text>
         </View>
@@ -149,12 +156,12 @@ const HomeScreen = () => {
           }}
         >
           <Emoji name="joy" style={{ fontSize: 24 }}></Emoji>
-          <Text style={{ fontSize: 15, paddingTop: 3, paddingLeft: 5 }}>
+          <Text style={{ fontSize: 13, paddingTop: 2, paddingLeft: 5 }}>
             husniye abla: amerika sadece dunyayi degil her seyi yonetiy
           </Text>
         </View>
         <View style={{ padding: 10, paddingTop: 20 }}>
-          <Text style={{ fontSize: 22 }}>518 yorumun hepsini oku</Text>
+          <Text style={{ fontSize: 16 }}>518 yorumun hepsini oku</Text>
         </View>
       </View>
     </SafeAreaView>
