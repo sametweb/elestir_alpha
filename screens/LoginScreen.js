@@ -1,125 +1,110 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 //prettier-ignore
-import { Container, Content, Form, Item, Input, Button, Text, Icon } from "native-base";
+import {  Container, Content,  Form, Item, Input, Button, Text, Icon } from "native-base";
 import { RowItem, ColItem } from "../Layouts/Wrappers";
 import { PostRequest } from "../API";
 
 const LoginScreen = ({ navigation }) => {
-  const [user, setUser] = useState({ username: "", password: "" });
-  const [tryLogin, setTryLogin] = useState(null);
+  const [login, setLogin] = useState({});
   const [showPassword, setShowPassword] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("Please log in");
+
+  const { username, password } = login;
+
+  const handleLogin = (username, password) =>
+    PostRequest("login", { username: username, password: password })
+      .then(res => {
+        setLogin({ ...login, ...res.data });
+      })
+      .catch(err => {
+        console.log("MY ERROR MESSAGE", err);
+      });
 
   useEffect(() => {
-    const headers = {
-      headers: {
-        username: user.username,
-        password: user.password
-        // email: "sam3@sam.com",
-        // phonenumber: "4152835064"
-      }
-    };
-    user.username &&
-      user.password &&
-      PostRequest("login", headers)
-        .then(res => {
-          if (res.data.token) {
-            setUser({ ...user, ...res.data });
-            setErrorMessage("You are logged in!");
-            setTryLogin(null);
-            navigation.navigate("App");
-          } else {
-            setErrorMessage("Login failed. Try again");
-          }
-        })
-        .catch(err => {
-          console.log("MY ERROR MESSAGE", err);
-          setTryLogin({ ...tryLogin, trying: false });
-        });
-  }, [tryLogin]);
+    login.status === "success" ? navigation.navigate("App") : null;
+  }, [login.status]);
 
-  console.log(user.token);
-  user.token ? navigation.navigate("Signup") : null;
+  console.log(login);
 
-  if (tryLogin && tryLogin.trying) {
-    return <Text>Spinner</Text>;
-  } else {
-    return (
-      <Container>
-        <Content>
-          <RowItem>
+  return (
+    <Container>
+      <Content>
+        <RowItem>
+          <ColItem>
+            <Text style={{ fontSize: 30, textAlign: "center" }}>
+              Welcome to elestir!
+            </Text>
+          </ColItem>
+        </RowItem>
+        <RowItem pl={30} pr={30}>
+          <Form>
             <ColItem>
-              <Text style={{ fontSize: 30, textAlign: "center" }}>
-                Welcome to elestir!
-              </Text>
+              <Item rounded regular>
+                <Icon active name="person" />
+                <Input
+                  keyboardType="email-address"
+                  autoCompleteType="email"
+                  autoCapitalize="none"
+                  onChangeText={text => setLogin({ ...login, username: text })}
+                  value={username}
+                />
+              </Item>
             </ColItem>
             <ColItem>
-              <Text style={{ fontSize: 18, textAlign: "center" }}>
-                {errorMessage}
-              </Text>
+              <Item rounded regular>
+                <Icon active name="key" />
+                <Input
+                  autoCapitalize="none"
+                  secureTextEntry={!showPassword}
+                  autoCompleteType="password"
+                  onChangeText={text => setLogin({ ...login, password: text })}
+                  value={password}
+                />
+                <Icon
+                  active
+                  name={showPassword ? "eye" : "eye-off"}
+                  onPress={() => setShowPassword(showPassword ? false : true)}
+                />
+              </Item>
             </ColItem>
-          </RowItem>
-          {!user.token ? (
-            <RowItem pl={30} pr={30}>
-              <Form>
-                <ColItem>
-                  <Item rounded regular>
-                    <Icon active name="person" />
-                    <Input
-                      keyboardType="email-address"
-                      autoCompleteType="email"
-                      autoCapitalize="none"
-                      onChangeText={text =>
-                        setUser({ ...user, username: text })
-                      }
-                      value={user.username}
-                    />
-                  </Item>
-                </ColItem>
-                <ColItem>
-                  <Item rounded regular>
-                    <Icon active name="key" />
-                    <Input
-                      autoCapitalize="none"
-                      secureTextEntry={!showPassword}
-                      autoCompleteType="password"
-                      onChangeText={text =>
-                        setUser({ ...user, password: text })
-                      }
-                      value={user.password}
-                    />
-                    <Icon
-                      active
-                      name={showPassword ? "eye" : "eye-off"}
-                      onPress={() =>
-                        setShowPassword(showPassword ? false : true)
-                      }
-                    />
-                  </Item>
-                </ColItem>
-                <ColItem>
-                  <Button
-                    rounded
-                    block
-                    dark
-                    onPress={() =>
-                      setTryLogin({
-                        username: user.username,
-                        password: user.password,
-                        trying: true
-                      })
-                    }
+            <ColItem>
+              <Button
+                rounded
+                block
+                dark
+                onPress={() => handleLogin(username, password)}
+              >
+                <Text>Log in</Text>
+              </Button>
+            </ColItem>
+            <ColItem>
+              {login.status === "failed" ? (
+                <Item
+                  danger
+                  bordered
+                  block
+                  style={{
+                    padding: 10,
+                    borderWidth: 1,
+                    borderStyle: "solid",
+                    borderColor: "crimson",
+                    backgroundColor: "pink"
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: "crimson"
+                    }}
                   >
-                    <Text>Log in</Text>
-                  </Button>
-                </ColItem>
-              </Form>
-            </RowItem>
-          ) : null}
-        </Content>
-      </Container>
-    );
-  }
+                    > username/email or password is incorrect!
+                  </Text>
+                </Item>
+              ) : null}
+            </ColItem>
+          </Form>
+        </RowItem>
+      </Content>
+    </Container>
+  );
 };
 
 export default LoginScreen;

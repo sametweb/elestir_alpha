@@ -7,13 +7,17 @@ const actions = {
   signup: "/signup"
 };
 
-export const PostRequest = (action, headers) => {
+const headers = {
+  "Content-Type": "application/json"
+};
+
+export const PostRequest = (action, data) => {
   switch (action) {
     case "login":
-      return axios.post(`${baseURL}${actions.login}`, {}, headers);
+      return axios.post(`${baseURL}${actions.login}`, data, headers);
     case "signup":
-      return axios.post(`${baseURL}${actions.login}`, {}, headers);
+      return axios.post(`${baseURL}${actions.login}`, data, headers);
     default:
-      return "Please define an action";
+      console.log("Please define an action");
   }
 };
