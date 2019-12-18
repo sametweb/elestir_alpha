@@ -15,18 +15,20 @@ import { PostRequest } from "../API";
 
 const SignupScreen = ({ navigation }) => {
   const [signup, setSignup] = useState({});
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = () => {
-    const data = {
-      username: signup.username,
-      password: signup.password,
-      email: signup.email,
-      phonenumber: signup.phonenumber
-    };
-
-    PostRequest("signup", data)
+    const { username, password, email, phonenumber } = signup;
+    PostRequest("signup", {
+      username: username,
+      password: password,
+      email: email,
+      phonenumber: phonenumber
+    })
       .then(res => {
-        setSignup(res.data);
+        const { data } = res;
+        setSignup({ ...signup, ...res.data });
+        // setSignup({ ...signup, data });
       })
       .catch(err => console.log("MY ERROR", err));
   };
@@ -73,6 +75,7 @@ const SignupScreen = ({ navigation }) => {
               <Item rounded regular>
                 <Icon active name="key" />
                 <Input
+                  secureTextEntry={!showPassword}
                   autoCompleteType="password"
                   autoCapitalize="none"
                   placeholder="Password"
@@ -80,12 +83,18 @@ const SignupScreen = ({ navigation }) => {
                     setSignup({ ...signup, password: text })
                   }
                 />
+                <Icon
+                  active
+                  name={showPassword ? "eye" : "eye-off"}
+                  onPress={() => setShowPassword(showPassword ? false : true)}
+                />
               </Item>
             </ColItem>
             <ColItem>
               <Item rounded regular>
                 <Icon active name="key" />
                 <Input
+                  secureTextEntry={!showPassword}
                   autoCapitalize="none"
                   placeholder="Confirm password"
                   onChangeText={text =>
