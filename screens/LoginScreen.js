@@ -25,8 +25,6 @@ const LoginScreen = ({ navigation }) => {
     login.status === "success" ? navigation.navigate("App") : null;
   }, [login.status]);
 
-  console.log(login);
-
   return (
     <Container>
       <Content>

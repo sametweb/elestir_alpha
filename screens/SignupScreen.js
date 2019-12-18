@@ -17,8 +17,9 @@ const SignupScreen = ({ navigation }) => {
   const [signup, setSignup] = useState({});
   const [showPassword, setShowPassword] = useState(false);
 
+  const { username, password, confirmPassword, email, phonenumber } = signup;
+
   const handleSubmit = () => {
-    const { username, password, email, phonenumber } = signup;
     PostRequest("signup", {
       username: username,
       password: password,
@@ -26,9 +27,7 @@ const SignupScreen = ({ navigation }) => {
       phonenumber: phonenumber
     })
       .then(res => {
-        const { data } = res;
         setSignup({ ...signup, ...res.data });
-        // setSignup({ ...signup, data });
       })
       .catch(err => console.log("MY ERROR", err));
   };
@@ -56,6 +55,7 @@ const SignupScreen = ({ navigation }) => {
                   onChangeText={text =>
                     setSignup({ ...signup, username: text })
                   }
+                  value={username}
                 />
               </Item>
             </ColItem>
@@ -68,6 +68,7 @@ const SignupScreen = ({ navigation }) => {
                   autoCapitalize="none"
                   placeholder="E-mail address"
                   onChangeText={text => setSignup({ ...signup, email: text })}
+                  value={email}
                 />
               </Item>
             </ColItem>
@@ -82,6 +83,7 @@ const SignupScreen = ({ navigation }) => {
                   onChangeText={text =>
                     setSignup({ ...signup, password: text })
                   }
+                  value={password}
                 />
                 <Icon
                   active
@@ -95,11 +97,13 @@ const SignupScreen = ({ navigation }) => {
                 <Icon active name="key" />
                 <Input
                   secureTextEntry={!showPassword}
+                  autoCompleteType="password"
                   autoCapitalize="none"
                   placeholder="Confirm password"
                   onChangeText={text =>
                     setSignup({ ...signup, confirmPassword: text })
                   }
+                  value={confirmPassword}
                 />
               </Item>
             </ColItem>
@@ -112,6 +116,7 @@ const SignupScreen = ({ navigation }) => {
                   onChangeText={text =>
                     setSignup({ ...signup, phonenumber: text })
                   }
+                  value={phonenumber}
                 />
               </Item>
             </ColItem>
