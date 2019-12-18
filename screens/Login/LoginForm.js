@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Form, Item, Input, Button, Text, Icon } from "native-base";
 import { ColItem } from "../../Layouts/Wrappers";
 
-const LoginForm = ({ handleLogin, login, setLogin }) => {
+const LoginForm = ({ handleLogin, login, setLogin, navigation }) => {
   const [showPassword, setShowPassword] = useState(false);
   const { username, password } = login;
 
@@ -44,7 +44,18 @@ const LoginForm = ({ handleLogin, login, setLogin }) => {
           dark
           onPress={() => handleLogin(username, password)}
         >
-          <Text>Log in</Text>
+          <Text>Login</Text>
+        </Button>
+      </ColItem>
+      <ColItem>
+        <Button
+          rounded
+          block
+          dark
+          bordered
+          onPress={() => navigation.push("Signup")}
+        >
+          <Text>Register!</Text>
         </Button>
       </ColItem>
       <ColItem>

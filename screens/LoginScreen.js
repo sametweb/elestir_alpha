@@ -45,6 +45,7 @@ const LoginScreen = ({ navigation }) => {
               handleLogin={handleLogin}
               login={login}
               setLogin={setLogin}
+              navigation={navigation}
             />
           )}
         </RowItem>
