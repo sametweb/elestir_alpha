@@ -4,7 +4,8 @@ const baseURL = "https://elestirorg.appspot.com";
 
 const actions = {
   login: "/login",
-  signup: "/signup"
+  signup: "/signup",
+  getquestions: "/getquestions"
 };
 
 const headers = {
@@ -17,6 +18,8 @@ export const PostRequest = (action, data) => {
       return axios.post(`${baseURL}${actions.login}`, data, headers);
     case "signup":
       return axios.post(`${baseURL}${actions.signup}`, data, headers);
+    case "getquestions":
+      return axios.get(`${baseURL}${actions.getquestions}`, data, headers);
     default:
       console.log("Please define an action");
   }
