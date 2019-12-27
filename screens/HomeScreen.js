@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text } from "react-native";
+import { View, Text, ActivityIndicator } from "react-native";
 import { Content } from "native-base";
 import Icon from "../Layouts/Icon";
 import { PostRequest } from "../API";
@@ -7,11 +7,13 @@ import Question from "../components/Question";
 
 const HomeScreen = () => {
   const [feed, setFeed] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const handleFeed = () => {
     PostRequest("getquestions", { count: "", offset: "" })
       .then(response => {
         setFeed(response.data.data);
+        setIsLoading(false);
       })
       .catch(error => console.log("ERROR", error));
   };
@@ -48,6 +50,13 @@ const HomeScreen = () => {
           </View>
         </View>
       </View>
+      {isLoading ? (
+        <ActivityIndicator
+          style={{ marginTop: "50%" }}
+          size="large"
+          color="#000000"
+        />
+      ) : null}
       {feed.map(q => (
         <Question key={q.ID} q={q} />
       ))}

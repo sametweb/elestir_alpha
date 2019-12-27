@@ -3,9 +3,10 @@ import { View, Text } from "react-native";
 import Emoji from "react-native-emoji";
 
 const Question = ({ q }) => {
+  const { question, answers } = q;
+
   console.log(q);
 
-  const { question, answers } = q;
   return (
     <View
       style={{
@@ -29,7 +30,7 @@ const Question = ({ q }) => {
         </Text>
         <Text
           style={{
-            fontSize: 16
+            fontSize: 24
           }}
         >
           {question}
@@ -37,28 +38,39 @@ const Question = ({ q }) => {
       </View>
       <View
         style={{
-          flexDirection: "row",
-          justifyContent: "space-around",
           padding: 10,
           borderWidth: 1,
           borderColor: "#eee"
         }}
       >
-        {Object.values(answers).map((item, index) => {
-          return (
+        {answers.map((item, index) => {
+          const answerText = item.value && item.value.split(":");
+
+          return item.value ? (
             <View
               key={index}
               style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                width: "100%",
                 padding: 10,
                 borderColor: "#ddd",
                 borderWidth: 1,
                 borderRadius: 30,
-                backgroundColor: "#f8f8f9"
+                backgroundColor: "#f8f8f9",
+                marginBottom: 2
               }}
             >
-              <Emoji name="skull" style={{ fontSize: 50 }}></Emoji>
+              <Emoji
+                name={answerText[1] || "radio_button"}
+                style={{ fontSize: 24, marginRight: 10 }}
+              ></Emoji>
+              <Text style={{ fontSize: 16 }}>
+                {answerText.length > 1 ? answerText[2] : answerText[0]}
+              </Text>
             </View>
-          );
+          ) : null;
         })}
       </View>
       <View style={{ paddingTop: 15, paddingBottom: 15 }}>
