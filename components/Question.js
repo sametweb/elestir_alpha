@@ -4,10 +4,8 @@ import Emoji from "react-native-emoji";
 import { PostRequest } from "../API";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
-const Question = ({ q }) => {
+const Question = ({ q, updateChoice }) => {
   const { ID, question, answers, choice } = q;
-
-  console.log(ID);
 
   const handleChoice = (questionID, choice) => {
     PostRequest("setchoice", {
@@ -16,7 +14,11 @@ const Question = ({ q }) => {
       questionID: questionID,
       choice: choice
     })
-      .then(response => console.log(response))
+      .then(response => {
+        response.data.status === "success"
+          ? updateChoice(questionID, choice)
+          : null;
+      })
       .catch(error => console.log(error));
   };
 

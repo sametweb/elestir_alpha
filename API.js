@@ -21,11 +21,7 @@ export const PostRequest = (action, data) => {
     case "signup":
       return axios.post(`${baseURL}${actions.signup}`, data, headers);
     case "getquestions":
-      return axios.post(
-        `${baseURL}${actions.getquestions}/?count=${data.count}&offset=${data.offset}`,
-        data,
-        headers
-      );
+      return axios.post(`${baseURL}${actions.getquestions}`, data, headers);
     case "createquestion":
       return axios.post(`${baseURL}${actions.createquestion}`, data, headers);
     case "setchoice":

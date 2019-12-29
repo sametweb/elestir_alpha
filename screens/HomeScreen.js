@@ -17,13 +17,25 @@ const HomeScreen = () => {
         "Bearer eyJhbGciOiJIUzUxMiJ9.eyJ1c2VySUQiOiIxNSIsImVtYWlsIjoic2FtZXRtdXRldmVsbGlAZ21haWwuY29tIiwic3ViIjoic2FtZXRtdXRldmVsbGkiLCJqdGkiOiIxNSIsImlzcyI6ImVsZXN0aXIub3JnIiwiaWF0IjoxNTc2NDUzODg4fQ.DpNNRRNr07t5VHRL7Gbjqq3dc9m-n6bGZTl_unutSCyUVWB4H_ErhnVc1uRYcQIBuD5WseOydsBEuFjTmIcJaQ"
     })
       .then(response => {
-        setFeed(response.data.data);
         setIsLoading(false);
+        setFeed(response.data.data);
       })
       .catch(error => console.log("ERROR", error));
   };
 
   useEffect(handleFeed, []);
+
+  const updateChoice = (questionID, choice) => {
+    setFeed(
+      feed.map(item => {
+        if (item.ID === questionID) {
+          item.choice !== choice ? (item.choice = choice) : null;
+        }
+        return item;
+      })
+    );
+  };
+
   return (
     <Content
       stickyHeaderIndices={[0]}
@@ -62,7 +74,7 @@ const HomeScreen = () => {
         />
       ) : null}
       {feed.map(q => (
-        <Question key={q.ID} q={q} />
+        <Question key={q.ID} q={q} updateChoice={updateChoice} />
       ))}
     </Content>
   );
