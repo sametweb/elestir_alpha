@@ -10,7 +10,12 @@ const HomeScreen = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const handleFeed = () => {
-    PostRequest("getquestions", { count: "", offset: "" })
+    PostRequest("getquestions", {
+      count: 10,
+      offset: 0,
+      token:
+        "Bearer eyJhbGciOiJIUzUxMiJ9.eyJ1c2VySUQiOiIxNSIsImVtYWlsIjoic2FtZXRtdXRldmVsbGlAZ21haWwuY29tIiwic3ViIjoic2FtZXRtdXRldmVsbGkiLCJqdGkiOiIxNSIsImlzcyI6ImVsZXN0aXIub3JnIiwiaWF0IjoxNTc2NDUzODg4fQ.DpNNRRNr07t5VHRL7Gbjqq3dc9m-n6bGZTl_unutSCyUVWB4H_ErhnVc1uRYcQIBuD5WseOydsBEuFjTmIcJaQ"
+    })
       .then(response => {
         setFeed(response.data.data);
         setIsLoading(false);
@@ -19,7 +24,6 @@ const HomeScreen = () => {
   };
 
   useEffect(handleFeed, []);
-
   return (
     <Content
       stickyHeaderIndices={[0]}

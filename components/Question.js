@@ -1,11 +1,24 @@
 import React from "react";
 import { View, Text } from "react-native";
 import Emoji from "react-native-emoji";
+import { PostRequest } from "../API";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const Question = ({ q }) => {
-  const { question, answers } = q;
+  const { ID, question, answers, choice } = q;
 
-  console.log(q);
+  console.log(ID);
+
+  const handleChoice = (questionID, choice) => {
+    PostRequest("setchoice", {
+      token:
+        "Bearer eyJhbGciOiJIUzUxMiJ9.eyJ1c2VySUQiOiIxNSIsImVtYWlsIjoic2FtZXRtdXRldmVsbGlAZ21haWwuY29tIiwic3ViIjoic2FtZXRtdXRldmVsbGkiLCJqdGkiOiIxNSIsImlzcyI6ImVsZXN0aXIub3JnIiwiaWF0IjoxNTc2NDUzODg4fQ.DpNNRRNr07t5VHRL7Gbjqq3dc9m-n6bGZTl_unutSCyUVWB4H_ErhnVc1uRYcQIBuD5WseOydsBEuFjTmIcJaQ",
+      questionID: questionID,
+      choice: choice
+    })
+      .then(response => console.log(response))
+      .catch(error => console.log(error));
+  };
 
   return (
     <View
@@ -45,9 +58,10 @@ const Question = ({ q }) => {
       >
         {answers.map((item, index) => {
           const answerText = item.value && item.value.split(":");
-
+          const selected = choice === index + 1 ? true : false;
           return item.value ? (
-            <View
+            <TouchableOpacity
+              onPress={() => handleChoice(ID, index + 1)}
               key={index}
               style={{
                 display: "flex",
@@ -55,10 +69,10 @@ const Question = ({ q }) => {
                 alignItems: "center",
                 width: "100%",
                 padding: 10,
-                borderColor: "#ddd",
+                borderColor: selected ? "#aaa" : "#ddd",
                 borderWidth: 1,
                 borderRadius: 30,
-                backgroundColor: "#f8f8f9",
+                backgroundColor: selected ? "#0066cc" : "#f8f8f9",
                 marginBottom: 2
               }}
             >
@@ -69,7 +83,7 @@ const Question = ({ q }) => {
               <Text style={{ fontSize: 16 }}>
                 {answerText.length > 1 ? answerText[2] : answerText[0]}
               </Text>
-            </View>
+            </TouchableOpacity>
           ) : null;
         })}
       </View>

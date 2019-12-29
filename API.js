@@ -6,7 +6,8 @@ const actions = {
   login: "/login",
   signup: "/signup",
   getquestions: "/getquestions",
-  createquestion: "/createquestion"
+  createquestion: "/createquestion",
+  setchoice: "/setchoice"
 };
 
 const headers = {
@@ -20,9 +21,16 @@ export const PostRequest = (action, data) => {
     case "signup":
       return axios.post(`${baseURL}${actions.signup}`, data, headers);
     case "getquestions":
-      return axios.get(`${baseURL}${actions.getquestions}`, data, headers);
+      return axios.post(
+        `${baseURL}${actions.getquestions}/?count=${data.count}&offset=${data.offset}`,
+        data,
+        headers
+      );
     case "createquestion":
       return axios.post(`${baseURL}${actions.createquestion}`, data, headers);
+    case "setchoice":
+      return axios.post(`${baseURL}${actions.setchoice}`, data, headers);
+
     default:
       console.log("Please define an action");
   }
