@@ -1,6 +1,7 @@
 import React from "react";
 import { View } from "react-native";
-export const RowItem = ({ children, p, pt, pr, pb, pl, m, mt, mr, mb, ml }) => {
+//prettier-ignore
+export const RowItem = ({ children, p, pt, pr, pb, pl, m, mt, mr, mb, ml, bg }) => {
   return (
     <View
       style={{
@@ -10,18 +11,19 @@ export const RowItem = ({ children, p, pt, pr, pb, pl, m, mt, mr, mb, ml }) => {
         paddingLeft: pl || 10,
         paddingRight: pr || 10,
         margin: m || 0,
-        marginTop: mt || 10,
+        marginTop: mt || 0,
         marginBottom: mb || 10,
         marginRight: mr || 0,
-        marginLeft: ml || 0
+        marginLeft: ml || 0,
+        backgroundColor: bg || 'white'
       }}
     >
       {children}
     </View>
   );
 };
-
-export const ColItem = ({ children, p, pt, pr, pb, pl, m, mt, mr, mb, ml }) => {
+//prettier-ignore
+export const ColItem = ({ children, p, pt, pr, pb, pl, m, mt, mr, mb, ml, bg }) => {
   return (
     <View
       style={{
@@ -31,10 +33,12 @@ export const ColItem = ({ children, p, pt, pr, pb, pl, m, mt, mr, mb, ml }) => {
         paddingLeft: pl || 5,
         paddingRight: pr || 5,
         margin: m || 0,
-        marginTop: mt || 5,
+        marginTop: mt || 0,
         marginBottom: mb || 0,
         marginRight: mr || 0,
-        marginLeft: ml || 0
+        marginLeft: ml || 0,
+        backgroundColor: bg || 'white'
+
       }}
     >
       {children}
