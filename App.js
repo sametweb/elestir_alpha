@@ -1,5 +1,3 @@
-import React from "react";
-
 //Navigation
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
