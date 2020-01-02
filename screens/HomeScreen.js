@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, ActivityIndicator, RefreshControl } from "react-native";
+import { View, Text, RefreshControl } from "react-native";
 import { Content } from "native-base";
 import Icon from "../Layouts/Icon";
 import { PostRequest } from "../API";
@@ -69,13 +69,7 @@ const HomeScreen = () => {
           </View>
         </View>
       </View>
-      {isLoading ? (
-        <ActivityIndicator
-          style={{ marginTop: "50%" }}
-          size="large"
-          color="#000000"
-        />
-      ) : null}
+
       {feed.map(q => (
         <Question key={q.ID} q={q} updateChoice={updateChoice} />
       ))}

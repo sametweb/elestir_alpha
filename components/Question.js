@@ -8,7 +8,7 @@ import { RowItem, ColItem } from "../Layouts/Wrappers";
 
 const Question = ({ q, updateChoice }) => {
   const { ID, question, answers, choice } = q;
-  console.log(q);
+
   const handleChoice = (questionID, choice) => {
     PostRequest("setchoice", {
       token:
