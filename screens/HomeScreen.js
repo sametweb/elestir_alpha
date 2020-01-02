@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, ActivityIndicator } from "react-native";
+import { View, Text, ActivityIndicator, RefreshControl } from "react-native";
 import { Content } from "native-base";
 import Icon from "../Layouts/Icon";
 import { PostRequest } from "../API";
@@ -17,8 +17,8 @@ const HomeScreen = () => {
         "Bearer eyJhbGciOiJIUzUxMiJ9.eyJ1c2VySUQiOiIxNSIsImVtYWlsIjoic2FtZXRtdXRldmVsbGlAZ21haWwuY29tIiwic3ViIjoic2FtZXRtdXRldmVsbGkiLCJqdGkiOiIxNSIsImlzcyI6ImVsZXN0aXIub3JnIiwiaWF0IjoxNTc2NDUzODg4fQ.DpNNRRNr07t5VHRL7Gbjqq3dc9m-n6bGZTl_unutSCyUVWB4H_ErhnVc1uRYcQIBuD5WseOydsBEuFjTmIcJaQ"
     })
       .then(response => {
-        setIsLoading(false);
         setFeed(response.data.data);
+        setIsLoading(false);
       })
       .catch(error => console.log("ERROR", error));
   };
@@ -35,12 +35,15 @@ const HomeScreen = () => {
       })
     );
   };
-  console.log(feed);
+
   return (
     <Content
       stickyHeaderIndices={[0]}
       showsVerticalScrollIndicator={false}
       style={{ backgroundColor: "#d1d1d2" }}
+      refreshControl={
+        <RefreshControl refreshing={isLoading} onRefresh={handleFeed} />
+      }
     >
       <View>
         <View
