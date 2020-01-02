@@ -35,7 +35,7 @@ const HomeScreen = () => {
       })
     );
   };
-
+  console.log(feed);
   return (
     <Content
       stickyHeaderIndices={[0]}

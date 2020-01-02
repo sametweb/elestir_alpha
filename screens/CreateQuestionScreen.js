@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+import { Keyboard } from "react-native";
 import {
   Content,
   Form,
+  Toast,
   Item,
   Input,
   Button,
@@ -18,25 +20,29 @@ const CreateQuestionScreen = () => {
       "Bearer eyJhbGciOiJIUzUxMiJ9.eyJ1c2VySUQiOiIxNSIsImVtYWlsIjoic2FtZXRtdXRldmVsbGlAZ21haWwuY29tIiwic3ViIjoic2FtZXRtdXRldmVsbGkiLCJqdGkiOiIxNSIsImlzcyI6ImVsZXN0aXIub3JnIiwiaWF0IjoxNTc2NDUzODg4fQ.DpNNRRNr07t5VHRL7Gbjqq3dc9m-n6bGZTl_unutSCyUVWB4H_ErhnVc1uRYcQIBuD5WseOydsBEuFjTmIcJaQ",
     question: "",
     category: "",
-    answers: ["", "", "", "", ""]
+    answers: ["", ""]
   });
 
-  const [status, setStatus] = useState({ isError: false, message: "" });
-
   const handleSubmit = question => {
-    PostRequest("createquestion", question)
+    PostRequest("createquestion", {
+      ...question,
+      answers: question.answers.filter(item => (item.length > 0 ? item : null))
+    })
       .then(response => {
-        response.data.status === "success"
-          ? setStatus({
-              isError: false,
-              message: "New question successfully added."
-            })
-          : setStatus({
-              isError: true,
-              message: "There was a problem adding your question."
-            });
+        return response.data.status === "success"
+          ? "New question successfully added."
+          : "There was a problem adding your question.";
       })
-      .catch(error => console.log(error));
+      .then(msg => {
+        Toast.show({
+          text: msg,
+          buttonText: "Okay",
+          duration: 5000
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
   };
 
   console.log(question);
@@ -74,6 +80,24 @@ const CreateQuestionScreen = () => {
               </Item>
             </ColItem>
           ))}
+          {question.answers.length < 5 ? (
+            <ColItem>
+              <Button
+                rounded
+                block
+                light
+                bordered
+                onPress={() =>
+                  setQuestion({
+                    ...question,
+                    answers: [...question.answers, ""]
+                  })
+                }
+              >
+                <Text style={{ color: "#777" }}>&#43; add another option</Text>
+              </Button>
+            </ColItem>
+          ) : null}
           <ColItem>
             <Item
               rounded
@@ -98,23 +122,17 @@ const CreateQuestionScreen = () => {
             </Item>
           </ColItem>
           <ColItem>
-            <Button rounded block dark onPress={() => handleSubmit(question)}>
+            <Button
+              rounded
+              block
+              dark
+              onPress={() => {
+                Keyboard.dismiss();
+                handleSubmit(question);
+              }}
+            >
               <Text>Submit Your Question</Text>
             </Button>
-          </ColItem>
-          <ColItem>
-            {status.isError ? (
-              <Text
-                style={{
-                  borderWidth: 1,
-                  borderColor: "crimson",
-                  backgroundColor: "pink",
-                  padding: 20
-                }}
-              >
-                {status.message && status.message}
-              </Text>
-            ) : null}
           </ColItem>
         </RowItem>
       </Form>

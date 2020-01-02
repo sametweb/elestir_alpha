@@ -1,7 +1,9 @@
-//Navigation
+import React from "react";
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 import { createBottomTabNavigator } from "react-navigation-tabs";
+import { Root } from "native-base";
+
 //Screens
 import HomeScreen from "./screens/HomeScreen";
 import CreateQuestionScreen from "./screens/CreateQuestionScreen";
@@ -37,9 +39,15 @@ const TabNavigator = createBottomTabNavigator({
   Settings: SettingsStack
 });
 
-export default createAppContainer(
+const AppContainer = createAppContainer(
   createSwitchNavigator({
     App: TabNavigator,
     Auth: AuthStack
   })
+);
+
+export default () => (
+  <Root>
+    <AppContainer />
+  </Root>
 );
