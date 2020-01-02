@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Keyboard } from "react-native";
 import {
   Content,
@@ -14,14 +14,16 @@ import {
 import { RowItem, ColItem } from "../Layouts/Wrappers";
 import { PostRequest } from "../API";
 
-const CreateQuestionScreen = () => {
-  const [question, setQuestion] = useState({
-    token:
-      "Bearer eyJhbGciOiJIUzUxMiJ9.eyJ1c2VySUQiOiIxNSIsImVtYWlsIjoic2FtZXRtdXRldmVsbGlAZ21haWwuY29tIiwic3ViIjoic2FtZXRtdXRldmVsbGkiLCJqdGkiOiIxNSIsImlzcyI6ImVsZXN0aXIub3JnIiwiaWF0IjoxNTc2NDUzODg4fQ.DpNNRRNr07t5VHRL7Gbjqq3dc9m-n6bGZTl_unutSCyUVWB4H_ErhnVc1uRYcQIBuD5WseOydsBEuFjTmIcJaQ",
-    question: "",
-    category: "",
-    answers: ["", ""]
-  });
+const INITIAL_STATE = {
+  token:
+    "Bearer eyJhbGciOiJIUzUxMiJ9.eyJ1c2VySUQiOiIxNSIsImVtYWlsIjoic2FtZXRtdXRldmVsbGlAZ21haWwuY29tIiwic3ViIjoic2FtZXRtdXRldmVsbGkiLCJqdGkiOiIxNSIsImlzcyI6ImVsZXN0aXIub3JnIiwiaWF0IjoxNTc2NDUzODg4fQ.DpNNRRNr07t5VHRL7Gbjqq3dc9m-n6bGZTl_unutSCyUVWB4H_ErhnVc1uRYcQIBuD5WseOydsBEuFjTmIcJaQ",
+  question: "",
+  category: "",
+  answers: ["", ""]
+};
+
+const CreateQuestionScreen = ({ navigation }) => {
+  const [question, setQuestion] = useState(INITIAL_STATE);
 
   const handleSubmit = question => {
     PostRequest("createquestion", {
@@ -29,9 +31,12 @@ const CreateQuestionScreen = () => {
       answers: question.answers.filter(item => (item.length > 0 ? item : null))
     })
       .then(response => {
-        return response.data.status === "success"
-          ? "New question successfully added."
-          : "There was a problem adding your question.";
+        if (response.data.status === "success") {
+          setQuestion(INITIAL_STATE);
+          return "New question successfully added.";
+        } else {
+          return "There was a problem adding your question.";
+        }
       })
       .then(msg => {
         Toast.show({
@@ -39,6 +44,7 @@ const CreateQuestionScreen = () => {
           buttonText: "Okay",
           duration: 5000
         });
+        navigation.push("Home");
       })
       .catch(error => {
         console.log(error);
@@ -68,6 +74,7 @@ const CreateQuestionScreen = () => {
               <Item rounded regular>
                 <Input
                   placeholder={`Answer ${choiceIndex + 1}`}
+                  value={question.answers[choiceIndex]}
                   onChangeText={text =>
                     setQuestion({
                       ...question,
