@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Keyboard } from "react-native";
+import { PostRequest } from "../API";
 import {
   Content,
   Form,
@@ -11,8 +12,8 @@ import {
   Picker,
   Icon
 } from "native-base";
+import { errorMessage } from "../styles";
 import { RowItem, ColItem } from "../Layouts/Wrappers";
-import { PostRequest } from "../API";
 
 const INITIAL_STATE = {
   token:
@@ -22,76 +23,113 @@ const INITIAL_STATE = {
   answers: ["", ""]
 };
 
-const FORM_VALIDATION = {
+const INITIAL_FORM_STATE = {
+  isFormValid: false,
   question: { isValid: false, message: "" },
-  answer1: { isValid: false, message: "" },
-  answer2: { isValid: false, message: "" },
-  answer3: { isValid: false, message: "" },
-  answer4: { isValid: false, message: "" },
-  answer5: { isValid: false, message: "" },
-  category: { isValid: false, message: "" }
+  category: { isValid: false, message: "" },
+  answers: {
+    answer1: { isValid: false, message: "" },
+    answer2: { isValid: false, message: "" },
+    answer3: { isValid: false, message: "" },
+    answer4: { isValid: false, message: "" },
+    answer5: { isValid: false, message: "" }
+  }
+};
+
+const VALIDATION_RULES = {
+  question: { min: 12, max: 100, regex: "" },
+  category: { min: 1, regex: "" },
+  answers: { min: 3, max: 35, regex: "" }
 };
 
 const CreateQuestionScreen = ({ navigation }) => {
   const [question, setQuestion] = useState(INITIAL_STATE);
-  const [validation, setValidation] = useState(FORM_VALIDATION);
+  const [validation, setValidation] = useState(INITIAL_FORM_STATE);
 
-  const formValidation = (input, inputName) => {
-    switch (inputName) {
-      case "question":
-        input.length < 15
-          ? setValidation({
-              ...validation,
-              question: {
-                isValid: false,
-                message: "Question title should be minimum 15 characters."
-              }
-            })
-          : input.length > 100
-          ? setValidation({
-              ...validation,
-              question: {
-                isValid: false,
+  const checkValidation = (question, rules) => {
+    let validatedFormState = INITIAL_FORM_STATE;
 
-                message: "Question title should be maximum 100 characters."
+    validatedFormState =
+      question.question.length < rules.question.min
+        ? {
+            ...validatedFormState,
+            question: {
+              isValid: false,
+              message: `Question must be minimum ${rules.question.min} characters.`
+            }
+          }
+        : question.question.length > rules.question.max
+        ? {
+            ...validatedFormState,
+            question: {
+              isValid: false,
+              message: `Question must be maximum ${rules.question.max} characters.`
+            }
+          }
+        : { ...validatedFormState, question: { isValid: true, message: "" } };
+
+    question.answers.forEach((answer, index) => {
+      if (index < 2) {
+        validatedFormState =
+          answer.length < rules.answers.min
+            ? {
+                ...validatedFormState,
+                answers: {
+                  ...validatedFormState.answers,
+                  [`answer${index + 1}`]: {
+                    isValid: false,
+                    message: `Answers should be minimum ${rules.answers.min} characters.`
+                  }
+                }
               }
-            })
-          : setValidation({
-              ...validation,
-              question: { isValid: true, message: "" }
-            });
-        break;
-      case "answer1":
-      case "answer2":
-      case "answer3":
-      case "answer4":
-      case "answer5":
-        input.length < 3
-          ? setValidation({
-              ...validation,
-              [inputName]: {
-                isValid: false,
-                message: "Answers should be minimum 3 characters."
+            : answer.length > rules.answers.max
+            ? {
+                ...validatedFormState,
+                answers: {
+                  ...validatedFormState.answers,
+                  [`answer${index + 1}`]: {
+                    isValid: false,
+                    message: `Answers should be maximum ${rules.answers.max} characters.`
+                  }
+                }
               }
-            })
-          : input.length > 40
-          ? setValidation({
-              ...validation,
-              [inputName]: {
-                isValid: false,
-                message: "Answers should be maximum 40 characters."
-              }
-            })
-          : setValidation({
-              ...validation,
-              [inputName]: { isValid: true, message: "" }
-            });
-      default:
-        return null;
+            : {
+                ...validatedFormState,
+                answers: {
+                  ...validatedFormState.answers,
+                  [`answer${index + 1}`]: {
+                    isValid: true,
+                    message: ``
+                  }
+                }
+              };
+      }
+    });
+
+    validatedFormState = question.category
+      ? { ...validatedFormState, category: { isValid: true, message: "" } }
+      : {
+          ...validatedFormState,
+          category: { isValid: false, message: "You must select a category." }
+        };
+
+    if (
+      validatedFormState.question.isValid &&
+      validatedFormState.category.isValid &&
+      validatedFormState.answers.answer1.isValid &&
+      validatedFormState.answers.answer2.isValid
+    ) {
+      validatedFormState = {
+        ...validatedFormState,
+        isFormValid: true
+      };
     }
+
+    setValidation(validatedFormState);
   };
 
   const handleSubmit = question => {
+    checkValidation(question, VALIDATION_RULES);
     PostRequest("createquestion", {
       ...question,
       answers: question.answers.filter(item => (item.length > 0 ? item : null))
@@ -101,7 +139,7 @@ const CreateQuestionScreen = ({ navigation }) => {
           setQuestion(INITIAL_STATE);
           return "New question successfully added.";
         } else {
-          return "There was a problem adding your question.";
+          return "Your question couldn't be posted!";
         }
       })
       .then(msg => {
@@ -113,9 +151,16 @@ const CreateQuestionScreen = ({ navigation }) => {
         navigation.push("Home");
       })
       .catch(error => {
+        Toast.show({
+          text: "Please make sure your question and answers meet the criteria.",
+          buttonText: "Okay",
+          duration: 5000
+        });
         console.log(error);
       });
   };
+
+  console.log(validation);
 
   return (
     <Content>
@@ -124,7 +169,6 @@ const CreateQuestionScreen = ({ navigation }) => {
           <ColItem>
             <Item rounded regular>
               <Input
-                onBlur={() => formValidation(question.question, "question")}
                 maxLength={100}
                 placeholder="Type your question here"
                 onChangeText={text =>
@@ -134,17 +178,11 @@ const CreateQuestionScreen = ({ navigation }) => {
                 style={{ fontSize: 20 }}
               />
             </Item>
-            <Text>
-              {validation.question.message && validation.question.message}
-            </Text>
           </ColItem>
           {question.answers.map((answer, choiceIndex) => (
             <ColItem key={choiceIndex}>
               <Item rounded regular>
                 <Input
-                  onBlur={() =>
-                    formValidation(answer, `answer${choiceIndex + 1}`)
-                  }
                   maxLength={35}
                   placeholder={`Answer ${choiceIndex + 1}`}
                   value={answer}
@@ -158,10 +196,6 @@ const CreateQuestionScreen = ({ navigation }) => {
                   }
                 />
               </Item>
-              <Text>
-                {validation[`answer${choiceIndex + 1}`].message &&
-                  validation[`answer${choiceIndex + 1}`].message}
-              </Text>
             </ColItem>
           ))}
           {question.answers.length < 5 ? (
@@ -194,9 +228,9 @@ const CreateQuestionScreen = ({ navigation }) => {
                 placeholderStyle={{ color: "#bfc6ea" }}
                 placeholderIconColor="#007aff"
                 selectedValue={question.category}
-                onValueChange={value =>
-                  setQuestion({ ...question, category: value })
-                }
+                onValueChange={value => {
+                  setQuestion({ ...question, category: value });
+                }}
               >
                 <Picker.Item label="Siyaset" value="Siyaset" />
                 <Picker.Item label="Eglence" value="Eglence" />
