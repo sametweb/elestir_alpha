@@ -5,7 +5,7 @@ import { Container, Content, Text } from "native-base";
 
 import { RowItem, ColItem } from "../Layouts/Wrappers";
 import { PostRequest } from "../API";
-import LoginForm from "./Login/LoginForm";
+import LoginForm from "../components/Login/LoginForm";
 
 const LoginScreen = ({ navigation }) => {
   const [login, setLogin] = useState({ isLoading: false });

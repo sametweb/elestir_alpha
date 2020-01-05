@@ -19,7 +19,7 @@ const INITIAL_STATE = {
   token:
     "Bearer eyJhbGciOiJIUzUxMiJ9.eyJ1c2VySUQiOiIxNSIsImVtYWlsIjoic2FtZXRtdXRldmVsbGlAZ21haWwuY29tIiwic3ViIjoic2FtZXRtdXRldmVsbGkiLCJqdGkiOiIxNSIsImlzcyI6ImVsZXN0aXIub3JnIiwiaWF0IjoxNTc2NDUzODg4fQ.DpNNRRNr07t5VHRL7Gbjqq3dc9m-n6bGZTl_unutSCyUVWB4H_ErhnVc1uRYcQIBuD5WseOydsBEuFjTmIcJaQ",
   question: "",
-  category: "",
+  category: null,
   answers: ["", ""]
 };
 
@@ -78,7 +78,7 @@ const CreateQuestionScreen = ({ navigation }) => {
                   ...validatedFormState.answers,
                   [`answer${index + 1}`]: {
                     isValid: false,
-                    message: `Answers should be minimum ${rules.answers.min} characters.`
+                    message: `Answers must be minimum ${rules.answers.min} characters.`
                   }
                 }
               }
@@ -89,7 +89,7 @@ const CreateQuestionScreen = ({ navigation }) => {
                   ...validatedFormState.answers,
                   [`answer${index + 1}`]: {
                     isValid: false,
-                    message: `Answers should be maximum ${rules.answers.max} characters.`
+                    message: `Answers must be maximum ${rules.answers.max} characters.`
                   }
                 }
               }
@@ -130,6 +130,7 @@ const CreateQuestionScreen = ({ navigation }) => {
 
   const handleSubmit = question => {
     checkValidation(question, VALIDATION_RULES);
+
     PostRequest("createquestion", {
       ...question,
       answers: question.answers.filter(item => (item.length > 0 ? item : null))
@@ -137,9 +138,8 @@ const CreateQuestionScreen = ({ navigation }) => {
       .then(response => {
         if (response.data.status === "success") {
           setQuestion(INITIAL_STATE);
+          setValidation(INITIAL_FORM_STATE);
           return "New question successfully added.";
-        } else {
-          return "Your question couldn't be posted!";
         }
       })
       .then(msg => {
@@ -178,6 +178,9 @@ const CreateQuestionScreen = ({ navigation }) => {
                 style={{ fontSize: 20 }}
               />
             </Item>
+            {!validation.question.isValid && (
+              <Text style={errorMessage}>{validation.question.message}</Text>
+            )}
           </ColItem>
           {question.answers.map((answer, choiceIndex) => (
             <ColItem key={choiceIndex}>
@@ -196,6 +199,14 @@ const CreateQuestionScreen = ({ navigation }) => {
                   }
                 />
               </Item>
+              {choiceIndex < 2 &&
+                !validation.answers[`answer${choiceIndex + 1}`].isValid &&
+                validation.answers[`answer${choiceIndex + 1}`].message.length >
+                  0 && (
+                  <Text style={errorMessage}>
+                    {validation.answers[`answer${choiceIndex + 1}`].message}
+                  </Text>
+                )}
             </ColItem>
           ))}
           {question.answers.length < 5 ? (
@@ -238,6 +249,9 @@ const CreateQuestionScreen = ({ navigation }) => {
               </Picker>
               <Icon name="arrow-down" />
             </Item>
+            {!validation.category.isValid && (
+              <Text style={errorMessage}>{validation.category.message}</Text>
+            )}
           </ColItem>
           <ColItem>
             <Button

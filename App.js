@@ -41,8 +41,8 @@ const TabNavigator = createBottomTabNavigator({
 
 const AppContainer = createAppContainer(
   createSwitchNavigator({
-    App: TabNavigator,
-    Auth: AuthStack
+    Auth: AuthStack,
+    App: TabNavigator
   })
 );
 
