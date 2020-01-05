@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Keyboard } from "react-native";
 import { PostRequest } from "../API";
+import { Context } from "../UserContext";
 import {
   Content,
   Form,
@@ -16,8 +17,7 @@ import { errorMessage } from "../styles";
 import { RowItem, ColItem } from "../Layouts/Wrappers";
 
 const INITIAL_STATE = {
-  token:
-    "Bearer eyJhbGciOiJIUzUxMiJ9.eyJ1c2VySUQiOiIxNSIsImVtYWlsIjoic2FtZXRtdXRldmVsbGlAZ21haWwuY29tIiwic3ViIjoic2FtZXRtdXRldmVsbGkiLCJqdGkiOiIxNSIsImlzcyI6ImVsZXN0aXIub3JnIiwiaWF0IjoxNTc2NDUzODg4fQ.DpNNRRNr07t5VHRL7Gbjqq3dc9m-n6bGZTl_unutSCyUVWB4H_ErhnVc1uRYcQIBuD5WseOydsBEuFjTmIcJaQ",
+  token: "",
   question: "",
   category: null,
   answers: ["", ""]
@@ -43,7 +43,12 @@ const VALIDATION_RULES = {
 };
 
 const CreateQuestionScreen = ({ navigation }) => {
-  const [question, setQuestion] = useState(INITIAL_STATE);
+  const user = useContext(Context);
+
+  const [question, setQuestion] = useState({
+    ...INITIAL_STATE,
+    token: user.token
+  });
   const [validation, setValidation] = useState(INITIAL_FORM_STATE);
 
   const checkValidation = (question, rules) => {

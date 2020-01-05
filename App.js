@@ -11,6 +11,8 @@ import SettingsScreen from "./screens/SettingsScreen";
 import LoginScreen from "./screens/LoginScreen";
 import SignupScreen from "./screens/SignupScreen";
 
+import UserContext from "./UserContext";
+
 const AuthStack = createStackNavigator(
   {
     Login: LoginScreen,
@@ -47,7 +49,9 @@ const AppContainer = createAppContainer(
 );
 
 export default () => (
-  <Root>
-    <AppContainer />
-  </Root>
+  <UserContext>
+    <Root>
+      <AppContainer />
+    </Root>
+  </UserContext>
 );
