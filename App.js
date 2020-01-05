@@ -35,11 +35,16 @@ const SettingsStack = createStackNavigator({
   Settings: { screen: SettingsScreen }
 });
 
-const TabNavigator = createBottomTabNavigator({
-  CreateQuestion: CreateQuestionStack,
-  Home: HomeStack,
-  Settings: SettingsStack
-});
+const TabNavigator = createBottomTabNavigator(
+  {
+    CreateQuestion: CreateQuestionStack,
+    Home: HomeStack,
+    Settings: SettingsStack
+  },
+  {
+    resetOnBlur: true
+  }
+);
 
 const AppContainer = createAppContainer(
   createSwitchNavigator({

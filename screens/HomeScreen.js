@@ -1,26 +1,34 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { View, Text, RefreshControl } from "react-native";
 import { Content } from "native-base";
 import Icon from "../Layouts/Icon";
 import { PostRequest } from "../API";
 import Question from "../components/Question";
+import { Context } from "../UserContext";
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }) => {
   const [feed, setFeed] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const user = useContext(Context);
 
   const handleFeed = () => {
-    PostRequest("getquestions", {
-      count: 10,
-      offset: 0,
-      token:
-        "Bearer eyJhbGciOiJIUzUxMiJ9.eyJ1c2VySUQiOiIxNSIsImVtYWlsIjoic2FtZXRtdXRldmVsbGlAZ21haWwuY29tIiwic3ViIjoic2FtZXRtdXRldmVsbGkiLCJqdGkiOiIxNSIsImlzcyI6ImVsZXN0aXIub3JnIiwiaWF0IjoxNTc2NDUzODg4fQ.DpNNRRNr07t5VHRL7Gbjqq3dc9m-n6bGZTl_unutSCyUVWB4H_ErhnVc1uRYcQIBuD5WseOydsBEuFjTmIcJaQ"
-    })
-      .then(response => {
-        setFeed(response.data.data);
-        setIsLoading(false);
+    PostRequest("isloggedin", { token: user.token })
+      .then(res => {
+        console.log(res);
+        res.data.status !== "success"
+          ? navigation.navigate("Auth")
+          : PostRequest("getquestions", {
+              count: 10,
+              offset: 0,
+              token: user.token
+            })
+              .then(response => {
+                setFeed(response.data.data);
+                setIsLoading(false);
+              })
+              .catch(error => console.log("ERROR", error));
       })
-      .catch(error => console.log("ERROR", error));
+      .catch(err => console.log(err));
   };
 
   useEffect(handleFeed, []);

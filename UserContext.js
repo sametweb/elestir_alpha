@@ -5,9 +5,11 @@ export const Context = React.createContext();
 export const UserContext = props => {
   const [user, setUser] = useState({
     username: "Guest",
-    token: "123",
+    token: "",
     login: loginUser => setUser({ ...user, ...loginUser }),
-    logout: () => setUser({ ...user, username: "Guest", token: "123" })
+    logout: () => {
+      setUser({ ...user, username: "Guest", token: "" });
+    }
   });
 
   return <Context.Provider value={user}>{props.children}</Context.Provider>;

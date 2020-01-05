@@ -4,6 +4,7 @@ const baseURL = "https://elestirorg.appspot.com";
 
 const actions = {
   login: "/login",
+  isloggedin: "/isloggedin",
   signup: "/signup",
   getquestions: "/getquestions",
   createquestion: "/createquestion",
@@ -18,6 +19,8 @@ export const PostRequest = (action, data) => {
   switch (action) {
     case "login":
       return axios.post(`${baseURL}${actions.login}`, data, headers);
+    case "isloggedin":
+      return axios.post(`${baseURL}${actions.isloggedin}`, data, headers);
     case "signup":
       return axios.post(`${baseURL}${actions.signup}`, data, headers);
     case "getquestions":
