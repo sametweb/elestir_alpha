@@ -4,7 +4,7 @@ export const Context = React.createContext();
 
 export const UserContext = props => {
   const [user, setUser] = useState({
-    username: "Guest",
+    username: "",
     token: "",
     login: loginUser => setUser({ ...user, ...loginUser }),
     logout: () => {

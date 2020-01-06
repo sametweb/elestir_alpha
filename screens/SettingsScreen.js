@@ -15,6 +15,7 @@ const SettingsScreen = ({ navigation }) => {
 
   return (
     <View>
+      <Text>Hello, {user.username}</Text>
       <TouchableOpacity onPress={() => user.logout()}>
         <Text>Logout</Text>
       </TouchableOpacity>

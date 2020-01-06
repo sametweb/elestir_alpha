@@ -18,9 +18,11 @@ const LoginScreen = ({ navigation }) => {
       .then(res => {
         setLogin({ ...login, isLoading: false, ...res.data });
         user.login(res.data.data);
+        return res.data.data.token;
       })
+      .then(token => console.log({ token })) // burada local storage a kaydet
       .catch(err => {
-        console.log("MY ERROR MESSAGE", err);
+        console.log("LOGIN ERROR", err);
       });
   };
 
@@ -28,14 +30,13 @@ const LoginScreen = ({ navigation }) => {
     login.status === "success" ? navigation.navigate("App") : null;
   }, [login.status]);
 
-  console.log("LoginScreen", user);
   return (
     <Container>
       <Content>
         <RowItem>
           <ColItem>
             <Text style={{ fontSize: 30, textAlign: "center" }}>
-              Welcome, {user.username}
+              Welcome to elestir!
             </Text>
           </ColItem>
         </RowItem>

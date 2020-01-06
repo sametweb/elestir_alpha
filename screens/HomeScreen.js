@@ -43,7 +43,7 @@ const HomeScreen = ({ navigation }) => {
       })
     );
   };
-
+  console.log(user, feed);
   return (
     <Content
       stickyHeaderIndices={[0]}
