@@ -35,13 +35,7 @@ const Question = ({ q, updateChoice }) => {
             avatar: usersInfo.avatar
           }}
         />
-        <View
-          style={{
-            padding: 10,
-            borderWidth: 1,
-            borderColor: "#eee"
-          }}
-        >
+        <View>
           {answers.map((item, index) => (
             <Choice
               key={index}

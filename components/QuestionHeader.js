@@ -28,7 +28,7 @@ const QuestionHeader = ({ question }) => {
             fontSize: 14,
             color: "#999",
             fontStyle: "italic",
-            paddingLeft: 15
+            paddingLeft: 8
           }}
         >
           {question.username} eleştiriyor
