@@ -36,7 +36,7 @@ const HomeScreen = ({ navigation }) => {
       })
     );
   };
-
+  console.log(feed);
   return (
     <Content
       stickyHeaderIndices={[0]}
@@ -72,7 +72,12 @@ const HomeScreen = ({ navigation }) => {
       </View>
 
       {feed.map(q => (
-        <Question key={q.ID} q={q} updateChoice={updateChoice} />
+        <Question
+          key={q.ID}
+          q={q}
+          updateChoice={updateChoice}
+          navigation={navigation}
+        />
       ))}
     </Content>
   );

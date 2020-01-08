@@ -6,7 +6,7 @@ import QuestionMeta from "./QuestionMeta";
 import QuestionHeader from "../components/QuestionHeader";
 import { RowItem, ColItem } from "../Layouts/Wrappers";
 
-const Question = ({ q, updateChoice }) => {
+const Question = ({ q, updateChoice, navigation }) => {
   const { ID, question, answers, choice, usersInfo, metaData } = q;
 
   const handleChoice = (questionID, choice) => {
@@ -28,6 +28,7 @@ const Question = ({ q, updateChoice }) => {
     <RowItem>
       <ColItem>
         <QuestionHeader
+          navigation={navigation}
           question={{
             question: question,
             username: usersInfo.username,

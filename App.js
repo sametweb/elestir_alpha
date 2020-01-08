@@ -6,6 +6,7 @@ import { Root } from "native-base";
 
 //Screens
 import HomeScreen from "./screens/HomeScreen";
+import SingleQuestionScreen from "./screens/SingleQuestionScreen";
 import CreateQuestionScreen from "./screens/CreateQuestionScreen";
 import SettingsScreen from "./screens/SettingsScreen";
 import LoginScreen from "./screens/LoginScreen";
@@ -24,7 +25,8 @@ const AuthStack = createStackNavigator(
 );
 
 const HomeStack = createStackNavigator({
-  Home: { screen: HomeScreen }
+  Home: { screen: HomeScreen },
+  SingleQuestion: { screen: SingleQuestionScreen }
 });
 
 const CreateQuestionStack = createStackNavigator({

@@ -1,7 +1,7 @@
 import React from "react";
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, TouchableOpacity } from "react-native";
 
-const QuestionHeader = ({ question }) => {
+const QuestionHeader = ({ question, navigation }) => {
   return (
     <View
       style={{
@@ -34,13 +34,19 @@ const QuestionHeader = ({ question }) => {
           {question.username} eleştiriyor
         </Text>
       </View>
-      <Text
-        style={{
-          fontSize: 24
-        }}
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate("SingleQuestion", { question: question })
+        }
       >
-        {question.question}
-      </Text>
+        <Text
+          style={{
+            fontSize: 24
+          }}
+        >
+          {question.question}
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 };
