@@ -12,23 +12,16 @@ const HomeScreen = ({ navigation }) => {
   const user = useContext(Context);
 
   const handleFeed = () => {
-    PostRequest("isloggedin", { token: user.token })
-      .then(res => {
-        console.log(res);
-        res.data.status !== "success"
-          ? navigation.navigate("Auth")
-          : PostRequest("getquestions", {
-              count: 10,
-              offset: 0,
-              token: user.token
-            })
-              .then(response => {
-                setFeed(response.data.data);
-                setIsLoading(false);
-              })
-              .catch(error => console.log("ERROR", error));
+    PostRequest("getquestions", {
+      count: 10,
+      offset: 0,
+      token: user.token
+    })
+      .then(response => {
+        setFeed(response.data.data);
+        setIsLoading(false);
       })
-      .catch(err => console.log(err));
+      .catch(error => console.log("ERROR", error));
   };
 
   useEffect(handleFeed, []);
@@ -43,7 +36,7 @@ const HomeScreen = ({ navigation }) => {
       })
     );
   };
-  console.log(user, feed);
+
   return (
     <Content
       stickyHeaderIndices={[0]}

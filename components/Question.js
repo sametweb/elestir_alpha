@@ -2,12 +2,12 @@ import React from "react";
 import { View } from "react-native";
 import { PostRequest } from "../API";
 import Choice from "../components/Choice";
-import CommentsOnFeed from "../components/CommentsOnFeed";
+import QuestionMeta from "./QuestionMeta";
 import QuestionHeader from "../components/QuestionHeader";
 import { RowItem, ColItem } from "../Layouts/Wrappers";
 
 const Question = ({ q, updateChoice }) => {
-  const { ID, question, answers, choice } = q;
+  const { ID, question, answers, choice, usersInfo, metaData } = q;
 
   const handleChoice = (questionID, choice) => {
     PostRequest("setchoice", {
@@ -23,11 +23,18 @@ const Question = ({ q, updateChoice }) => {
       })
       .catch(error => console.log(error));
   };
-
+  console.log(q);
   return (
     <RowItem>
       <ColItem>
-        <QuestionHeader question={question} />
+        <QuestionHeader
+          question={{
+            question: question,
+            username: usersInfo.username,
+            userID: usersInfo.userID,
+            avatar: usersInfo.avatar
+          }}
+        />
         <View
           style={{
             padding: 10,
@@ -46,7 +53,7 @@ const Question = ({ q, updateChoice }) => {
             />
           ))}
         </View>
-        <CommentsOnFeed />
+        <QuestionMeta metaData={metaData} />
       </ColItem>
     </RowItem>
   );

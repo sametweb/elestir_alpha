@@ -1,6 +1,5 @@
 import React from "react";
-import { View, Text } from "react-native";
-import Emoji from "react-native-emoji";
+import { View, Text, Image } from "react-native";
 
 const QuestionHeader = ({ question }) => {
   return (
@@ -10,20 +9,37 @@ const QuestionHeader = ({ question }) => {
         paddingLeft: 5
       }}
     >
-      <Emoji
-        name="man-shrugging"
-        style={{ fontSize: 18, color: "black" }}
-      ></Emoji>
+      <View
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "flex-start",
+          alignItems: "center",
+          marginBottom: 5
+        }}
+      >
+        <Image
+          source={{ uri: "http://cdn.onlinewebfonts.com/svg/img_568657.png" }}
+          style={{ width: 15, height: 15 }}
+        />
 
-      <Text style={{ fontSize: 14, color: "#999", fontStyle: "italic" }}>
-        muhittin eleştiriyor
-      </Text>
+        <Text
+          style={{
+            fontSize: 14,
+            color: "#999",
+            fontStyle: "italic",
+            paddingLeft: 15
+          }}
+        >
+          {question.username} eleştiriyor
+        </Text>
+      </View>
       <Text
         style={{
           fontSize: 24
         }}
       >
-        {question}
+        {question.question}
       </Text>
     </View>
   );

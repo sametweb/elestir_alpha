@@ -37,8 +37,8 @@ const SettingsStack = createStackNavigator({
 
 const TabNavigator = createBottomTabNavigator(
   {
-    CreateQuestion: CreateQuestionStack,
     Home: HomeStack,
+    CreateQuestion: CreateQuestionStack,
     Settings: SettingsStack
   },
   {
@@ -48,8 +48,8 @@ const TabNavigator = createBottomTabNavigator(
 
 const AppContainer = createAppContainer(
   createSwitchNavigator({
-    Auth: AuthStack,
-    App: TabNavigator
+    App: TabNavigator,
+    Auth: AuthStack
   })
 );
 
