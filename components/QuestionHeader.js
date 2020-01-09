@@ -36,7 +36,10 @@ const QuestionHeader = ({ question, navigation }) => {
       </View>
       <TouchableOpacity
         onPress={() =>
-          navigation.navigate("SingleQuestion", { question: question })
+          navigation.navigate("SingleQuestion", {
+            questionID: question.questionID,
+            handleChoice: question.handleChoice
+          })
         }
       >
         <Text

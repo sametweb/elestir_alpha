@@ -30,10 +30,10 @@ const Question = ({ q, updateChoice, navigation }) => {
         <QuestionHeader
           navigation={navigation}
           question={{
+            questionID: ID,
             question: question,
             username: usersInfo.username,
-            userID: usersInfo.userID,
-            avatar: usersInfo.avatar
+            handleChoice: handleChoice
           }}
         />
         <View>

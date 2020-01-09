@@ -7,6 +7,7 @@ const actions = {
   isloggedin: "/isloggedin",
   signup: "/signup",
   getquestions: "/getquestions",
+  question: "/question",
   createquestion: "/createquestion",
   setchoice: "/setchoice"
 };
@@ -25,6 +26,8 @@ export const PostRequest = (action, data) => {
       return axios.post(`${baseURL}${actions.signup}`, data, headers);
     case "getquestions":
       return axios.post(`${baseURL}${actions.getquestions}`, data, headers);
+    case "question":
+      return axios.get(`${baseURL}${actions.question}/${data}`, headers);
     case "createquestion":
       return axios.post(`${baseURL}${actions.createquestion}`, data, headers);
     case "setchoice":
