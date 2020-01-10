@@ -8,6 +8,7 @@ const actions = {
   signup: "/signup",
   getquestions: "/getquestions",
   question: "/question",
+  getcomments: "/getcomments",
   createquestion: "/createquestion",
   setchoice: "/setchoice"
 };
@@ -28,6 +29,8 @@ export const PostRequest = (action, data) => {
       return axios.post(`${baseURL}${actions.getquestions}`, data, headers);
     case "question":
       return axios.get(`${baseURL}${actions.question}/${data}`, headers);
+    case "getcomments":
+      return axios.post(`${baseURL}${actions.getcomments}/${data}`, headers);
     case "createquestion":
       return axios.post(`${baseURL}${actions.createquestion}`, data, headers);
     case "setchoice":

@@ -48,7 +48,11 @@ const Question = ({ q, updateChoice, navigation }) => {
             />
           ))}
         </View>
-        <QuestionMeta metaData={metaData} />
+        <QuestionMeta
+          metaData={metaData}
+          questionID={ID}
+          navigation={navigation}
+        />
       </ColItem>
     </RowItem>
   );

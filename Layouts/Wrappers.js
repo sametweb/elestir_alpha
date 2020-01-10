@@ -5,6 +5,7 @@ export const RowItem = ({ children, p, pt, pr, pb, pl, m, mt, mr, mb, ml, bg }) 
   return (
     <View
       style={{
+        flex: 1,
         padding: p || 0,
         paddingTop: pt || 10,
         paddingBottom: pb || 10,
@@ -27,6 +28,7 @@ export const ColItem = ({ children, p, pt, pr, pb, pl, m, mt, mr, mb, ml, bg }) 
   return (
     <View
       style={{
+        flex: 1, 
         padding: p || 0,
         paddingTop: pt || 5,
         paddingBottom: pb || 5,

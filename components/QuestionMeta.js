@@ -4,7 +4,7 @@ import Icon from "../Layouts/Icon";
 import { metaButtons } from "../styles";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
-const QuestionMeta = ({ metaData }) => {
+const QuestionMeta = ({ metaData, questionID, navigation }) => {
   return (
     <View
       style={{
@@ -15,7 +15,12 @@ const QuestionMeta = ({ metaData }) => {
         justifyContent: "space-around"
       }}
     >
-      <TouchableOpacity style={metaButtons}>
+      <TouchableOpacity
+        style={metaButtons}
+        onPress={() =>
+          navigation.navigate("SingleQuestion", { questionID: questionID })
+        }
+      >
         <Icon name="comment-dots" />
         <Text style={{ fontSize: 14 }}>{metaData.commentCount}</Text>
       </TouchableOpacity>

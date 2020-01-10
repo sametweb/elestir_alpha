@@ -31,7 +31,7 @@ const QuestionHeader = ({ question, navigation }) => {
             paddingLeft: 8
           }}
         >
-          {question.username} eleştiriyor
+          {question.username}
         </Text>
       </View>
       <TouchableOpacity
