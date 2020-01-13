@@ -30,7 +30,6 @@ const SignupScreen = ({ navigation }) => {
   console.log(signup);
   return (
     <Container>
-      <Header />
       <Content>
         <RowItem pl={30} pr={30}>
           <SignupForm

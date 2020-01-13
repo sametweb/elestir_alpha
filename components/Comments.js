@@ -40,7 +40,13 @@ const Comments = ({ questionID, navigation }) => {
               {comment.commentText}
             </Text>
             <View
-              style={{ flexDirection: "row", justifyContent: "space-between" }}
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                backgroundColor: "#333",
+                marginBottom: 10
+              }}
             >
               <View style={{ flexDirection: "row" }}>
                 <Text style={{ padding: 5 }}>❤</Text>
@@ -49,7 +55,7 @@ const Comments = ({ questionID, navigation }) => {
               <TouchableOpacity
                 onPress={() => navigation.navigate("UserProfile")}
               >
-                <Text style={{ fontSize: 12, paddingBottom: 5, color: "grey" }}>
+                <Text style={{ fontSize: 12, paddingRight: 5, color: "white" }}>
                   {comment.userInfo.username}
                 </Text>
               </TouchableOpacity>

@@ -1,17 +1,12 @@
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  ActivityIndicator,
-  KeyboardAvoidingView
-} from "react-native";
+import { View, Text, ActivityIndicator } from "react-native";
 import { PostRequest } from "../API";
 import Choice from "../components/Choice";
 import QuestionMeta from "../components/QuestionMeta";
 import QuestionHeader from "../components/QuestionHeader";
 import Comments from "../components/Comments";
 import { RowItem, ColItem } from "../Layouts/Wrappers";
-import { Content, Item, Input } from "native-base";
+import { Container, Content, Item, Input } from "native-base";
 
 const SingleQuestionScreen = props => {
   const questionID = props.navigation.getParam("questionID");
@@ -29,7 +24,7 @@ const SingleQuestionScreen = props => {
   }
 
   return (
-    <>
+    <Container>
       <Content>
         <RowItem>
           <ColItem>
@@ -59,6 +54,8 @@ const SingleQuestionScreen = props => {
       </Content>
       <View
         style={{
+          position: "absolute",
+          bottom: 0,
           flexDirection: "row",
           justifyContent: "space-around",
           alignItems: "center",
@@ -84,7 +81,7 @@ const SingleQuestionScreen = props => {
           />
         </Item>
       </View>
-    </>
+    </Container>
   );
 };
 

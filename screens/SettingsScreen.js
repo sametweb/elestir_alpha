@@ -3,6 +3,7 @@ import { View, Text } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Context } from "../UserContext";
 import { PostRequest } from "../API";
+import { Container, Content } from "native-base";
 
 const SettingsScreen = ({ navigation }) => {
   const user = useContext(Context);
@@ -14,12 +15,16 @@ const SettingsScreen = ({ navigation }) => {
     .catch(err => console.log(err));
 
   return (
-    <View>
-      <Text>Hello, {user.username}</Text>
-      <TouchableOpacity onPress={() => user.logout()}>
-        <Text>Logout</Text>
-      </TouchableOpacity>
-    </View>
+    <Container>
+      <Content>
+        <View>
+          <Text>Hello, {user.username}</Text>
+          <TouchableOpacity onPress={() => user.logout()}>
+            <Text>Logout</Text>
+          </TouchableOpacity>
+        </View>
+      </Content>
+    </Container>
   );
 };
 
