@@ -6,7 +6,8 @@ import QuestionMeta from "../components/QuestionMeta";
 import QuestionHeader from "../components/QuestionHeader";
 import Comments from "../components/Comments";
 import { RowItem, ColItem } from "../Layouts/Wrappers";
-import { Container, Content, Item, Input } from "native-base";
+import { Container, Content } from "native-base";
+import CommentForm from "../components/CommentForm";
 
 const SingleQuestionScreen = props => {
   const questionID = props.navigation.getParam("questionID");
@@ -49,38 +50,10 @@ const SingleQuestionScreen = props => {
             </View>
             <QuestionMeta metaData={question.metaData} />
           </ColItem>
+          <CommentForm />
           <Comments questionID={questionID} navigation={props.navigation} />
         </RowItem>
       </Content>
-      <View
-        style={{
-          position: "absolute",
-          bottom: 0,
-          flexDirection: "row",
-          justifyContent: "space-around",
-          alignItems: "center",
-          backgroundColor: "white",
-          borderTopWidth: 1,
-          borderTopColor: "#ccc",
-          borderStyle: "solid"
-        }}
-      >
-        <Text style={{ padding: 5, fontSize: 30 }}>🙂</Text>
-        <Item
-          rounded
-          style={{
-            padding: 5,
-            flex: 1,
-            margin: 5,
-            backgroundColor: "#eee"
-          }}
-        >
-          <Input
-            placeholder="Rounded Textbox"
-            style={{ fontSize: 13, height: 28 }}
-          />
-        </Item>
-      </View>
     </Container>
   );
 };
