@@ -10,6 +10,7 @@ const actions = {
   question: "/question",
   getcomments: "/getcomments",
   createquestion: "/createquestion",
+  createcomment: "/createcomment",
   setchoice: "/setchoice"
 };
 
@@ -30,9 +31,14 @@ export const PostRequest = (action, data) => {
     case "question":
       return axios.get(`${baseURL}${actions.question}/${data}`, headers);
     case "getcomments":
-      return axios.post(`${baseURL}${actions.getcomments}/${data}`, headers);
+      return axios.post(
+        `${baseURL}${actions.getcomments}/${data.questionID}?count=${data.count}&offset=${data.offset}`,
+        headers
+      );
     case "createquestion":
       return axios.post(`${baseURL}${actions.createquestion}`, data, headers);
+    case "createcomment":
+      return axios.post(`${baseURL}${actions.createcomment}`, data, headers);
     case "setchoice":
       return axios.post(`${baseURL}${actions.setchoice}`, data, headers);
 

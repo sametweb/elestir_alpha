@@ -7,14 +7,12 @@ import { Item, Input } from "native-base";
 
 const Comments = ({ questionID, navigation }) => {
   const [comments, setComments] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    PostRequest("getcomments", questionID)
+    PostRequest("getcomments", { questionID: questionID, count: 10, offset: 0 })
       .then(res => {
         console.log("res", res);
         setComments(res.data.data);
-        setIsLoading(false);
       })
       .catch(err => console.log("getComments error", err));
   }, []);
@@ -23,7 +21,7 @@ const Comments = ({ questionID, navigation }) => {
     <ColItem>
       <View>
         <Text style={{ fontWeight: "bold", fontSize: 16 }}>Comments</Text>
-        <ActivityIndicator animating={isLoading} size="large" />
+        {/* <ActivityIndicator animating={isLoading} size="large" /> */}
       </View>
       <View>
         {comments.map(comment => (

@@ -20,6 +20,12 @@ const SingleQuestionScreen = props => {
       .catch(err => console.log(err));
   }, []);
 
+  const submitComment = form => {
+    PostRequest("createcomment", form)
+      .then(res => console.log(res))
+      .catch(err => console.log(err));
+  };
+
   if (!question.question) {
     return <ActivityIndicator />;
   }
@@ -50,7 +56,7 @@ const SingleQuestionScreen = props => {
             </View>
             <QuestionMeta metaData={question.metaData} />
           </ColItem>
-          <CommentForm />
+          <CommentForm questionID={questionID} submitComment={submitComment} />
           <Comments questionID={questionID} navigation={props.navigation} />
         </RowItem>
       </Content>

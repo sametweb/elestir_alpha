@@ -1,27 +1,49 @@
 import React, { useState, useContext, useEffect } from "react";
-import { View, Text, Modal } from "react-native";
+import { View, Text, Modal, Keyboard } from "react-native";
 import { Context } from "../UserContext";
 import { RowItem } from "../Layouts/Wrappers";
-import { Item, Input } from "native-base";
+import { Item, Input, Icon } from "native-base";
 import {
   TouchableOpacity,
   TouchableHighlight
 } from "react-native-gesture-handler";
 import { Container, Content } from "native-base";
 
-const CommentForm = () => {
+const CommentForm = ({ questionID, submitComment }) => {
   const [form, setForm] = useState({
     token: "",
-    questionID: null,
+    questionID: questionID,
     comment: "",
     emoji: "🙂"
   });
+
+  const [keyboardStatus, setKeyboardStatus] = useState(false);
   const [emojiKeyboardStatus, setEmojiKeyboardStatus] = useState(false);
 
   const user = useContext(Context);
 
   useEffect(() => {
     setForm({ ...form, token: user.token });
+  }, []);
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      "keyboardDidShow",
+      () => {
+        setKeyboardStatus(true);
+      }
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      "keyboardDidHide",
+      () => {
+        setKeyboardStatus(false);
+      }
+    );
+
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
   }, []);
 
   useEffect(() => {
@@ -110,11 +132,17 @@ const CommentForm = () => {
           }}
         >
           <Input
-            placeholder="Rounded Textbox"
+            placeholder="type your comment here"
             style={{ fontSize: 13, height: 28 }}
             onChangeText={text => setForm({ ...form, comment: text })}
           />
         </Item>
+
+        {keyboardStatus && (
+          <TouchableOpacity onPress={() => submitComment(form)}>
+            <Icon name="arrow-dropright-circle" style={{ fontSize: 41 }} />
+          </TouchableOpacity>
+        )}
       </View>
     </RowItem>
   );
