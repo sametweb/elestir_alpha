@@ -10,12 +10,13 @@ import {
 import { Container, Content } from "native-base";
 
 const CommentForm = ({ questionID, submitComment }) => {
-  const [form, setForm] = useState({
+  const INITIAL_STATE = {
     token: "",
     questionID: questionID,
     comment: "",
     emoji: "🙂"
-  });
+  };
+  const [form, setForm] = useState(INITIAL_STATE);
 
   const [keyboardStatus, setKeyboardStatus] = useState(false);
   const [emojiKeyboardStatus, setEmojiKeyboardStatus] = useState(false);
@@ -135,11 +136,17 @@ const CommentForm = ({ questionID, submitComment }) => {
             placeholder="type your comment here"
             style={{ fontSize: 13, height: 28 }}
             onChangeText={text => setForm({ ...form, comment: text })}
+            value={form.comment}
           />
         </Item>
 
         {keyboardStatus && (
-          <TouchableOpacity onPress={() => submitComment(form)}>
+          <TouchableOpacity
+            onPress={() => {
+              setForm(INITIAL_STATE);
+              submitComment(form);
+            }}
+          >
             <Icon name="arrow-dropright-circle" style={{ fontSize: 41 }} />
           </TouchableOpacity>
         )}
