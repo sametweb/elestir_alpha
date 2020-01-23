@@ -23,6 +23,7 @@ const SingleQuestionScreen = props => {
     return <ActivityIndicator />;
   }
 
+  console.log("SingleQuestion", question);
   return (
     <Container>
       <Content>
@@ -31,9 +32,11 @@ const SingleQuestionScreen = props => {
             <QuestionHeader
               question={{
                 question: question.question,
+                userID: question.usersInfo.userID,
                 username: question.usersInfo.username,
                 avatar: question.usersInfo.avatar
               }}
+              navigation={props.navigation}
             />
             <View>
               {question.answers.map((item, index) => (

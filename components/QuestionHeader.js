@@ -24,6 +24,9 @@ const QuestionHeader = ({ question, navigation }) => {
         />
 
         <Text
+          onPress={() =>
+            navigation.navigate("SingleUser", { userID: question.userID })
+          }
           style={{
             fontSize: 14,
             color: "#999",

@@ -32,6 +32,7 @@ const Question = ({ q, updateChoice, navigation }) => {
           question={{
             questionID: ID,
             question: question,
+            userID: usersInfo.userID,
             username: usersInfo.username,
             handleChoice: handleChoice
           }}

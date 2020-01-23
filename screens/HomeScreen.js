@@ -36,7 +36,7 @@ const HomeScreen = ({ navigation }) => {
       })
     );
   };
-  console.log(feed);
+  console.log("FEED", feed);
   return (
     <Container>
       <Content
