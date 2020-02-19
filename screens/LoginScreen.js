@@ -1,34 +1,16 @@
-import React, { useState, useEffect, useContext } from "react";
-import { ActivityIndicator } from "react-native";
+import React, { useState, useEffect } from "react";
+import { connect } from "react-redux";
 
-import { Container, Content, Text } from "native-base";
+import { ActivityIndicator } from "react-native";
+import { Container, Content, Text, Toast } from "native-base";
 
 import { RowItem, ColItem } from "../Layouts/Wrappers";
-import { PostRequest } from "../API";
 import LoginForm from "../components/Login/LoginForm";
-import { Context } from "../UserContext";
 
-const LoginScreen = ({ navigation }) => {
-  const [login, setLogin] = useState({ isLoading: false });
-  const user = useContext(Context);
-
-  const handleLogin = (username, password) => {
-    setLogin({ isLoading: true });
-    PostRequest("login", { username: username, password: password })
-      .then(res => {
-        setLogin({ ...login, isLoading: false, ...res.data });
-        user.login(res.data.data);
-        return res.data.data.token;
-      })
-      .then(token => console.log({ token })) // burada local storage a kaydet
-      .catch(err => {
-        console.log("LOGIN ERROR", err);
-      });
-  };
-
+const LoginScreen = props => {
   useEffect(() => {
-    login.status === "success" ? navigation.navigate("App") : null;
-  }, [login.status]);
+    if (props.loggedInUser.token) props.navigation.push("Home");
+  });
 
   return (
     <Container>
@@ -41,20 +23,19 @@ const LoginScreen = ({ navigation }) => {
           </ColItem>
         </RowItem>
         <RowItem pl={30} pr={30}>
-          {login.isLoading ? (
-            <ActivityIndicator />
-          ) : (
-            <LoginForm
-              handleLogin={handleLogin}
-              login={login}
-              setLogin={setLogin}
-              navigation={navigation}
-            />
-          )}
+          {props.isLoading ? <ActivityIndicator /> : <LoginForm />}
         </RowItem>
       </Content>
     </Container>
   );
 };
 
-export default LoginScreen;
+const mapStateToProps = state => {
+  return {
+    isLoading: state.isLoading,
+    message: state.message,
+    loggedInUser: state.loggedInUser
+  };
+};
+
+export default connect(mapStateToProps)(LoginScreen);

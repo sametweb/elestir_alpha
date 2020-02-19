@@ -1,4 +1,5 @@
 import React from "react";
+import { withNavigation } from "react-navigation";
 import { View, Text, Image, TouchableOpacity } from "react-native";
 
 const QuestionHeader = ({ question, navigation }) => {
@@ -34,14 +35,13 @@ const QuestionHeader = ({ question, navigation }) => {
             paddingLeft: 8
           }}
         >
-          {question.username}
+          {question.usersInfo.username}
         </Text>
       </View>
       <TouchableOpacity
         onPress={() =>
           navigation.navigate("SingleQuestion", {
-            questionID: question.questionID,
-            handleChoice: question.handleChoice
+            questionID: question.ID
           })
         }
       >
@@ -57,4 +57,4 @@ const QuestionHeader = ({ question, navigation }) => {
   );
 };
 
-export default QuestionHeader;
+export default withNavigation(QuestionHeader);

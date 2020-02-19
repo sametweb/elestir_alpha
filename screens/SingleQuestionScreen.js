@@ -10,7 +10,6 @@ import { Container, Content } from "native-base";
 
 const SingleQuestionScreen = props => {
   const questionID = props.navigation.getParam("questionID");
-  const handleChoice = props.navigation.getParam("handleChoice");
   const [question, setQuestion] = useState({});
 
   useEffect(() => {
@@ -23,7 +22,6 @@ const SingleQuestionScreen = props => {
     return <ActivityIndicator />;
   }
 
-  console.log("SingleQuestion", question);
   return (
     <Container>
       <Content>
@@ -42,7 +40,6 @@ const SingleQuestionScreen = props => {
               {question.answers.map((item, index) => (
                 <Choice
                   key={index}
-                  handleChoice={handleChoice}
                   ID={questionID}
                   item={item}
                   choice={question.choice}

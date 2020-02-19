@@ -1,34 +1,26 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
+import { fetchFeed, updateFeed } from "../utils/actions";
+
 import { View, Text, RefreshControl } from "react-native";
 import { Container, Content } from "native-base";
 import Icon from "../Layouts/Icon";
-import { PostRequest } from "../API";
 import Question from "../components/Question";
-import { Context } from "../UserContext";
 
-const HomeScreen = ({ navigation }) => {
-  const [feed, setFeed] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const user = useContext(Context);
-
-  const handleFeed = () => {
-    PostRequest("getquestions", {
-      count: 10,
-      offset: 0,
-      token: user.token
-    })
-      .then(response => {
-        setFeed(response.data.data);
-        setIsLoading(false);
-      })
-      .catch(error => console.log("ERROR", error));
+const HomeScreen = props => {
+  const fetchFeedParams = {
+    count: 10,
+    offset: 0,
+    token: props.loggedInUser.token
   };
 
-  useEffect(handleFeed, []);
+  useEffect(() => {
+    props.fetchFeed(fetchFeedParams);
+  }, []);
 
-  const updateChoice = (questionID, choice) => {
-    setFeed(
-      feed.map(item => {
+  const updateFeedAfterChoice = (questionID, choice) => {
+    props.updateFeed(
+      props.feed.map(item => {
         if (item.ID === questionID) {
           item.choice !== choice ? (item.choice = choice) : null;
         }
@@ -36,7 +28,7 @@ const HomeScreen = ({ navigation }) => {
       })
     );
   };
-  console.log("FEED", feed);
+
   return (
     <Container>
       <Content
@@ -44,7 +36,10 @@ const HomeScreen = ({ navigation }) => {
         showsVerticalScrollIndicator={false}
         style={{ backgroundColor: "#d1d1d2" }}
         refreshControl={
-          <RefreshControl refreshing={isLoading} onRefresh={handleFeed} />
+          <RefreshControl
+            refreshing={props.isLoading}
+            onRefresh={() => props.fetchFeed(fetch)}
+          />
         }
       >
         <View>
@@ -74,12 +69,11 @@ const HomeScreen = ({ navigation }) => {
           </View>
         </View>
 
-        {feed.map(q => (
+        {props.feed.map(q => (
           <Question
             key={q.ID}
             q={q}
-            updateChoice={updateChoice}
-            navigation={navigation}
+            updateFeedAfterChoice={updateFeedAfterChoice}
           />
         ))}
       </Content>
@@ -87,4 +81,12 @@ const HomeScreen = ({ navigation }) => {
   );
 };
 
-export default HomeScreen;
+const mapStateToProps = state => {
+  return {
+    loggedInUser: state.loggedInUser,
+    isLoading: state.isLoading,
+    feed: state.feed
+  };
+};
+
+export default connect(mapStateToProps, { fetchFeed, updateFeed })(HomeScreen);

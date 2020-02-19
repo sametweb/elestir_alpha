@@ -1,13 +1,31 @@
 import React from "react";
+import { connect } from "react-redux";
+import { submitChoice, fetchFeed } from "../utils/actions";
+
 import { TouchableOpacity, Text } from "react-native";
 import Emoji from "react-native-emoji";
 
-const Choice = ({ handleChoice, choice, item, index, ID }) => {
-  const answerText = item.value && item.value.split(":");
-  const selected = choice === index + 1 ? true : false;
-  return item.value ? (
+const Choice = props => {
+  const selected = props.choice === props.index + 1 ? true : false;
+
+  const submitChoiceParams = {
+    token: props.loggedInUser.token,
+    questionID: props.ID,
+    choice: props.index + 1
+  };
+
+  const fetchFeedParams = {
+    count: 10,
+    offset: 0,
+    token: props.loggedInUser.token
+  };
+
+  return props.answer.value ? (
     <TouchableOpacity
-      onPress={() => handleChoice(ID, index + 1)}
+      onPress={() => {
+        props.submitChoice(submitChoiceParams);
+        props.fetchFeed(fetchFeedParams);
+      }}
       style={{
         display: "flex",
         flexDirection: "row",
@@ -22,14 +40,18 @@ const Choice = ({ handleChoice, choice, item, index, ID }) => {
       }}
     >
       <Emoji
-        name={answerText[1] || "radio_button"}
+        name={"radio_button"}
         style={{ fontSize: 24, marginRight: 10 }}
       ></Emoji>
-      <Text style={{ fontSize: 16 }}>
-        {answerText.length > 1 ? answerText[2] : answerText[0]}
-      </Text>
+      <Text style={{ fontSize: 16 }}>{props.answer.value}</Text>
     </TouchableOpacity>
   ) : null;
 };
 
-export default Choice;
+const mapStateToProps = state => {
+  return {
+    loggedInUser: state.loggedInUser
+  };
+};
+
+export default connect(mapStateToProps, { submitChoice, fetchFeed })(Choice);

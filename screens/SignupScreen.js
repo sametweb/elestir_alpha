@@ -1,39 +1,31 @@
-import React, { useEffect, useState } from "react";
-import { Container, Header, Content } from "native-base";
+import React, { useState } from "react";
+import { connect } from "react-redux";
+import { signup } from "../utils/actions";
+
+import { Container, Content } from "native-base";
 import { RowItem } from "../Layouts/Wrappers";
-import { PostRequest } from "../API";
 import SignupForm from "../components/Signup/SignupForm";
 
-const SignupScreen = ({ navigation }) => {
+const SignupScreen = props => {
   const [signup, setSignup] = useState({});
   const { username, password, confirmPassword, email, phonenumber } = signup;
 
-  const handleSubmit = () => {
-    PostRequest("signup", {
-      username: username,
-      password: password,
-      email: email,
-      phonenumber: phonenumber
-    })
-      .then(res => {
-        setSignup({ ...signup, ...res.data });
-      })
-      .catch(err => console.log("MY ERROR", err));
+  console.log("signup", props);
+  const form = {
+    username: username,
+    password: password,
+    email: email,
+    phonenumber: phonenumber
   };
 
-  useEffect(() => {
-    signup.status && signup.status === "success"
-      ? navigation.push("Login")
-      : null;
-  }, [signup.status]);
-
-  console.log(signup);
   return (
     <Container>
       <Content>
         <RowItem pl={30} pr={30}>
           <SignupForm
-            handleSubmit={handleSubmit}
+            handleSubmit={() =>
+              props.signup(form, () => props.navigation.push("Login"))
+            }
             signup={signup}
             setSignup={setSignup}
           />
@@ -43,4 +35,11 @@ const SignupScreen = ({ navigation }) => {
   );
 };
 
-export default SignupScreen;
+const mapStateToProps = state => {
+  return {
+    isLoading: state.isLoading,
+    message: state.message
+  };
+};
+
+export default connect(mapStateToProps, { signup })(SignupScreen);

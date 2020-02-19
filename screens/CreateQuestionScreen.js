@@ -37,9 +37,9 @@ const INITIAL_FORM_STATE = {
 };
 
 const VALIDATION_RULES = {
-  question: { min: 12, max: 100, regex: "" },
-  category: { min: 1, regex: "" },
-  answers: { min: 3, max: 35, regex: "" }
+  question: { min: 12, max: 100, regex: /regex/i },
+  category: { min: 1, regex: /regex/i },
+  answers: { min: 3, max: 35, regex: /regex/i }
 };
 
 const CreateQuestionScreen = ({ navigation }) => {

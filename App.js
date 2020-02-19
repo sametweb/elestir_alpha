@@ -4,6 +4,11 @@ import { createStackNavigator } from "react-navigation-stack";
 import { createBottomTabNavigator } from "react-navigation-tabs";
 import { Root } from "native-base";
 
+import { createStore, applyMiddleware } from "redux";
+import { Provider } from "react-redux";
+import thunk from "redux-thunk";
+import { reducer } from "./utils/reducers";
+
 //Screens
 import HomeScreen from "./screens/HomeScreen";
 import SingleQuestionScreen from "./screens/SingleQuestionScreen";
@@ -13,7 +18,7 @@ import SettingsScreen from "./screens/SettingsScreen";
 import LoginScreen from "./screens/LoginScreen";
 import SignupScreen from "./screens/SignupScreen";
 
-import UserContext from "./UserContext";
+const store = createStore(reducer, applyMiddleware(thunk));
 
 const AuthStack = createStackNavigator(
   {
@@ -52,15 +57,15 @@ const TabNavigator = createBottomTabNavigator(
 
 const AppContainer = createAppContainer(
   createSwitchNavigator({
-    App: TabNavigator,
-    Auth: AuthStack
+    Auth: AuthStack,
+    App: TabNavigator
   })
 );
 
 export default () => (
-  <UserContext>
+  <Provider store={store}>
     <Root>
       <AppContainer />
     </Root>
-  </UserContext>
+  </Provider>
 );

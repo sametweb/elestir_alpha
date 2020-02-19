@@ -1,10 +1,15 @@
 import React, { useState } from "react";
+import { connect } from "react-redux";
+import { login } from "../../utils/actions";
+import { withNavigation } from "react-navigation";
 import { Form, Item, Input, Button, Text, Icon } from "native-base";
 import { ColItem } from "../../Layouts/Wrappers";
 
-const LoginForm = ({ handleLogin, login, setLogin, navigation }) => {
+const LoginForm = props => {
+  const [creds, setCreds] = useState({ username: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
-  const { username, password } = login;
+
+  const handleLogin = creds => props.login(creds);
 
   return (
     <Form>
@@ -15,8 +20,8 @@ const LoginForm = ({ handleLogin, login, setLogin, navigation }) => {
             keyboardType="email-address"
             autoCompleteType="email"
             autoCapitalize="none"
-            onChangeText={text => setLogin({ ...login, username: text })}
-            value={username}
+            onChangeText={text => setCreds({ ...creds, username: text })}
+            value={creds.username}
           />
         </Item>
       </ColItem>
@@ -27,23 +32,18 @@ const LoginForm = ({ handleLogin, login, setLogin, navigation }) => {
             autoCapitalize="none"
             secureTextEntry={!showPassword}
             autoCompleteType="password"
-            onChangeText={text => setLogin({ ...login, password: text })}
-            value={password}
+            onChangeText={text => setCreds({ ...creds, password: text })}
+            value={creds.password}
           />
           <Icon
             active
             name={showPassword ? "eye" : "eye-off"}
-            onPress={() => setShowPassword(showPassword ? false : true)}
+            onPress={() => setShowPassword(!showPassword)}
           />
         </Item>
       </ColItem>
       <ColItem>
-        <Button
-          rounded
-          block
-          dark
-          onPress={() => handleLogin(username, password)}
-        >
+        <Button rounded block dark onPress={() => handleLogin(creds)}>
           <Text>Login</Text>
         </Button>
       </ColItem>
@@ -53,13 +53,13 @@ const LoginForm = ({ handleLogin, login, setLogin, navigation }) => {
           block
           dark
           bordered
-          onPress={() => navigation.push("Signup")}
+          onPress={() => props.navigation.push("Signup")}
         >
           <Text>Register!</Text>
         </Button>
       </ColItem>
       <ColItem>
-        {login.status === "failed" ? (
+        {props.isLoading ? (
           <Item
             danger
             bordered
@@ -86,4 +86,10 @@ const LoginForm = ({ handleLogin, login, setLogin, navigation }) => {
   );
 };
 
-export default LoginForm;
+const mapStateToProps = state => {
+  return {
+    isLoading: state.isLoading
+  };
+};
+
+export default connect(mapStateToProps, { login })(withNavigation(LoginForm));
